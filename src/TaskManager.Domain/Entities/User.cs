@@ -27,8 +27,6 @@ public class User : Entity
     {
         Password = password;
     }
-
-
     private void ValidateUSer()
     {
         DomainValidation.MinLength(UserName, 3, nameof(UserName));
