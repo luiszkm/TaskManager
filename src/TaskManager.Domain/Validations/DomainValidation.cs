@@ -33,4 +33,10 @@ public class DomainValidation
         if (target.Length > maxLength)
             throw new EntityValidationException($"{targetName} should be at most {maxLength} characters long");
     }
+
+    public static void ValidateGuid(Guid target, string targetName)
+    {
+        if (target == Guid.Empty)
+            throw new EntityValidationException($"{targetName} should not be empty");
+    }
 }

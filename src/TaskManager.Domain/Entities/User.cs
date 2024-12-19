@@ -1,5 +1,5 @@
-﻿using TaskManager.Domain.Validations;
-using TaskManager.Domain.ValuObjects;
+﻿using TaskManager.Domain.SeedWork;
+using TaskManager.Domain.Validations;
 
 namespace TaskManager.Domain.Entities;
 
@@ -7,25 +7,33 @@ public class User : Entity
 {
     public string UserName { get; private set; }
     public string Password { get; private set; }
-    public List<Guid> Tasks { get; private set; }
+    public DateTime LastUpdatePassword { get; private set; }
+    public List<TaskUser> Tasks { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
     public User(string userName, string password)
     {
         UserName = userName;
         Password = password;
-        Tasks = new List<Guid>();
+        Tasks = new List<TaskUser>();
         ValidateUSer();
     }
-    public void AddTask(Guid taskId)
+    public void AddTask(TaskUser taskId)
     {
         Tasks.Add(taskId);
+        ValidateUSer();
+        UpdatedAt = DateTime.UtcNow;
     }
-    public void RemoveTask(Guid taskId)
+    public void RemoveTask(TaskUser taskId)
     {
         Tasks.Remove(taskId);
+        ValidateUSer();
+        UpdatedAt = DateTime.UtcNow;
     }
-    public void ChangePassword(string password)
+    public void UpdatePassword(string newPassword)
     {
-        Password = password;
+        Password = newPassword;
+        LastUpdatePassword = DateTime.UtcNow;
+        ValidateUSer();
     }
     private void ValidateUSer()
     {

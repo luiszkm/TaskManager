@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Domain.ValuObjects;
+﻿namespace TaskManager.Domain.SeedWork;
 
 public class Entity
 {

@@ -13,4 +13,5 @@ public class UserFixture : BaseFixture
     public string Password => Faker.Internet.Password();
     public DomainEntity.User CreateValidUser() => new(UserName, Password);
 
+
 }
