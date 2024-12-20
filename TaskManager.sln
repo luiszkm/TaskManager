@@ -5,17 +5,23 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{75149971-B4BA-4263-8862-CB3C4F065246}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.API", "src\TaskManager.API\TaskManager.API.csproj", "{F09D97F2-083C-412C-BF84-39C2F5C2F611}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.API", "src\TaskManager.API\TaskManager.API.csproj", "{F09D97F2-083C-412C-BF84-39C2F5C2F611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Domain", "src\TaskManager.Domain\TaskManager.Domain.csproj", "{E6F95102-1632-4B48-A4C1-AEE8D65FA96D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Domain", "src\TaskManager.Domain\TaskManager.Domain.csproj", "{E6F95102-1632-4B48-A4C1-AEE8D65FA96D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Infra.EFCore", "src\TaskManager.Infra.EFCore\TaskManager.Infra.EFCore.csproj", "{8E26BD0C-6FFA-47F3-9935-FDEEC1C51D86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Infra.EFCore", "src\TaskManager.Infra.EFCore\TaskManager.Infra.EFCore.csproj", "{8E26BD0C-6FFA-47F3-9935-FDEEC1C51D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Application", "src\TaskManager.Application\TaskManager.Application.csproj", "{6AB9F34D-F642-422D-8BA7-053CEC46C8C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Application", "src\TaskManager.Application\TaskManager.Application.csproj", "{6AB9F34D-F642-422D-8BA7-053CEC46C8C6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{76CD5A46-66DB-4023-98B3-3A7F6EECE92F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.UnitTest", "tests\TaskManager.UnitTest\TaskManager.UnitTest.csproj", "{EA8306C5-4A83-4684-8BDD-204137BFDDC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.UnitTest", "tests\TaskManager.UnitTest\TaskManager.UnitTest.csproj", "{EA8306C5-4A83-4684-8BDD-204137BFDDC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Taskmanage.IntegrationTest", "tests\Taskmanage.IntegrationTest\Taskmanage.IntegrationTest.csproj", "{0EE36B09-7D55-497C-90F9-A4BBED04C692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.E2E.Test", "tests\TaskManager.E2E.Test\TaskManager.E2E.Test.csproj", "{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FEC8E4E4-CAEE-40AB-ADD5-F6E856C3F9AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +49,18 @@ Global
 		{EA8306C5-4A83-4684-8BDD-204137BFDDC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA8306C5-4A83-4684-8BDD-204137BFDDC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA8306C5-4A83-4684-8BDD-204137BFDDC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE36B09-7D55-497C-90F9-A4BBED04C692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE36B09-7D55-497C-90F9-A4BBED04C692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE36B09-7D55-497C-90F9-A4BBED04C692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE36B09-7D55-497C-90F9-A4BBED04C692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEC8E4E4-CAEE-40AB-ADD5-F6E856C3F9AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEC8E4E4-CAEE-40AB-ADD5-F6E856C3F9AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEC8E4E4-CAEE-40AB-ADD5-F6E856C3F9AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEC8E4E4-CAEE-40AB-ADD5-F6E856C3F9AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +71,8 @@ Global
 		{8E26BD0C-6FFA-47F3-9935-FDEEC1C51D86} = {75149971-B4BA-4263-8862-CB3C4F065246}
 		{6AB9F34D-F642-422D-8BA7-053CEC46C8C6} = {75149971-B4BA-4263-8862-CB3C4F065246}
 		{EA8306C5-4A83-4684-8BDD-204137BFDDC3} = {76CD5A46-66DB-4023-98B3-3A7F6EECE92F}
+		{0EE36B09-7D55-497C-90F9-A4BBED04C692} = {76CD5A46-66DB-4023-98B3-3A7F6EECE92F}
+		{A1664C4F-3E79-4DFD-A0B7-EACEAB9A13BB} = {76CD5A46-66DB-4023-98B3-3A7F6EECE92F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {479D0134-12BE-47F3-888C-331724E1E1F6}

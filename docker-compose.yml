@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  taskmanager.api:
+    image: ${DOCKER_REGISTRY-}taskmanagerapi
+    build:
+      context: .
+      dockerfile: src/TaskManager.API/Dockerfile
+    ports:
+      - "5000:80" # Expondo a API na porta 5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings_Postgress=Host=localhost;Port=5432;Database=root;Username=postgres;Password=root
+    depends_on:
+      - taskmanager.db
+  
+
+  taskmanager.db:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root      
+    ports:
+      - "5432:5432"
+
