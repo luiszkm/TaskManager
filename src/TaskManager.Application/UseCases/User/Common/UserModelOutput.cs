@@ -1,4 +1,5 @@
 ﻿
+
 namespace TaskManager.Application.UseCases.User.Common;
 
 public class UserModelOutput
@@ -8,7 +9,7 @@ public class UserModelOutput
         string userName,
         DateTime createdAt,
         DateTime updatedAt,
-        IReadOnlyList<DomainEntity.TaskUser> tasks)
+        ICollection<DomainEntity.TaskUser> tasks)
     {
         Id = id;
         UserName = userName;
@@ -16,11 +17,12 @@ public class UserModelOutput
         Tasks = tasks;
     }
 
+
     public Guid Id { get; set; }
     public string UserName { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public IReadOnlyList<DomainEntity.TaskUser> Tasks { get; set; }
+    public ICollection<DomainEntity.TaskUser> Tasks { get; set; }
 
     public static UserModelOutput FromUser(DomainEntity.User user)
     {
@@ -29,7 +31,7 @@ public class UserModelOutput
             user.UserName,
             user.CreatedAt,
             user.UpdatedAt,
-            user.Tasks);
+            user.Tasks.Select(x => x).ToList());
 
     }
 }

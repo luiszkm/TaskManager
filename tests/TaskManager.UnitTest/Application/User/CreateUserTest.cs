@@ -19,7 +19,8 @@ public class CreateUserTest
     public async Task CreateUserWithValidData()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
 
         var output = await useCase.Handle(input, CancellationToken.None);
@@ -39,7 +40,8 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUser()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
         input.UserName = null;
 
@@ -53,7 +55,10 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUserWithUserNmaeEmpty()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
+
         var input = _fixture.CreateUserInput();
         input.UserName = string.Empty;
 
@@ -67,7 +72,8 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUserWithUserNameWhiteSpace()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
         input.UserName = " ";
 
@@ -81,13 +87,14 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUserWithPasswordWhiteSpace()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
         input.Password = " ";
 
         Func<Task> act = async () => await useCase.Handle(input, CancellationToken.None);
 
-        await act.Should().ThrowAsync<EntityValidationException>();
+        await act.Should().ThrowAsync<ApplicationException>();
     }
 
     // throw when cant instantiate user with password null
@@ -95,13 +102,14 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUserWithPasswordNull()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
         input.Password = null;
 
         Func<Task> act = async () => await useCase.Handle(input, CancellationToken.None);
 
-        await act.Should().ThrowAsync<EntityValidationException>();
+        await act.Should().ThrowAsync<ApplicationException>();
     }
 
     // throw when cant instantiate user with password empty
@@ -109,13 +117,14 @@ public class CreateUserTest
     public async Task ThrowWhenCantInstantiateUserWithPasswordEmpty()
     {
         var repositoryMock = _fixture.GetUserRepositoryMock();
-        var useCase = new CreateUser(repositoryMock.Object);
+        var authMock = _fixture.GetAuthorizationMock();
+        var useCase = new CreateUser(repositoryMock.Object, authMock.Object);
         var input = _fixture.CreateUserInput();
         input.Password = string.Empty;
 
         Func<Task> act = async () => await useCase.Handle(input, CancellationToken.None);
 
-        await act.Should().ThrowAsync<EntityValidationException>();
+        await act.Should().ThrowAsync<ApplicationException>();
     }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace TaskManager.UnitTest.Common;
+﻿using TaskManager.Domain.Enums;
+
+namespace TaskManager.UnitTest.Common;
 
 
 [CollectionDefinition(nameof(TaskUserFixtureCollection))]
@@ -16,4 +18,11 @@ public class TaskUserFixture : BaseFixture
             password ?? Password
             );
 
+    public DomainEntity.TaskUser CreateValidTaskUser(Guid? userId = null, CategoryEnuns? category = null) =>
+       new(
+            GetTitle(),
+            GetDescription(),
+            category ?? CategoryEnuns.Others,
+            userId ?? GetGuid()
+           );
 }

@@ -17,29 +17,30 @@ public class ListTasks : IRequestHandler<ListTasksInput, List<TaskModelOutput>>
     public async Task<List<TaskModelOutput>> Handle(ListTasksInput? input, CancellationToken cancellationToken)
     {
         var tasks = await _tasksRepository.Filter(input);
-        var user = await _userRepository.GetByUserName(input.UserName);
-        if (user == null)
+
+        if (input.UserId != null)
         {
-            user = await _userRepository.GetById(input.UserId);
+            var userTasks = tasks.Where(task => task.UserId == input.UserId).ToList();
+            return userTasks.Select(task => TaskModelOutput.FromTask(task)).ToList();
+
         }
 
-        if (input.Category != null && input.UserName != null || input.Category != null && input.UserId != null)
+
+        if (input.Category != null && input.UserName != null)
         {
-            tasks = tasks.Where(task => task.Category == input.Category && task.UserId == input.UserId).ToList();
+            var user = await _userRepository.GetByUserName(input.UserName);
+            tasks = tasks.Where(task => task.Category == input.Category && task.UserId == user.Id).ToList();
             return tasks.Select(task => TaskModelOutput.FromTask(task)).ToList();
         }
 
         // filtragem regra de negocio 
-        if (input.UserId != null || input.UserName != null)
+        if (input.UserName != null)
         {
+            var user = await _userRepository.GetByUserName(input.UserName);
             tasks = tasks.Where(task => task.UserId == user.Id).ToList();
             return tasks.Select(task => TaskModelOutput.FromTask(task)).ToList();
         }
-        if (input.Category != null)
-        {
-            tasks = tasks.Where(task => task.Category == input.Category).ToList();
-            return tasks.Select(task => TaskModelOutput.FromTask(task)).ToList();
-        }
+
 
         return tasks.Select(task => TaskModelOutput.FromTask(task)).ToList();
 

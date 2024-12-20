@@ -18,18 +18,18 @@ public class TasksUserTests
     public void InstantiateTaskUSer()
     {
         var title = fixture.GetTitle();
-        var userId = Guid.NewGuid();
+        var userId = fixture.CreateValidUser();
         var description = fixture.GetDescription();
         var category = fixture.GetCategory();
 
-        var taskUser = new DomainEntity.TaskUser(title, description, category, userId);
+        var taskUser = new DomainEntity.TaskUser(title, description, category, userId.Id);
 
         taskUser.Title.Should().Be(title);
         taskUser.Description.Should().Be(description);
         taskUser.IsCompleted.Should().BeFalse();
         taskUser.Category.Should().Be(category);
         taskUser.UserId.Should().NotBeEmpty();
-        taskUser.UserId.Should().Be(userId);
+        taskUser.UserId.Should().Be(userId.Id);
         taskUser.CreatedAt.Should().BeBefore(DateTime.UtcNow);
     }
 
@@ -42,11 +42,11 @@ public class TasksUserTests
     [InlineData("12")]
     public void ThrowExceptionWhenTitleIsNull(string? invalidTitle)
     {
-        var userId = Guid.NewGuid();
+        var userId = fixture.CreateValidUser();
         var description = fixture.GetDescription();
         var category = fixture.GetCategory();
 
-        Action act = () => new DomainEntity.TaskUser(invalidTitle, description, category, userId);
+        Action act = () => new DomainEntity.TaskUser(invalidTitle, description, category, userId.Id);
 
         act.Should().Throw<EntityValidationException>();
     }
@@ -60,26 +60,11 @@ public class TasksUserTests
     [InlineData("12")]
     public void ThrowExceptionWhenDescriptionIsNull(string? invalidDescription)
     {
-        var userId = Guid.NewGuid();
+        var userId = fixture.CreateValidUser();
         var title = fixture.GetTitle();
         var category = fixture.GetCategory();
 
-        Action act = () => new DomainEntity.TaskUser(title, invalidDescription, category, userId);
-
-        act.Should().Throw<EntityValidationException>();
-    }
-
-    // throw exception when userId is empty
-    [Fact(DisplayName = nameof(ThrowExceptionWhenUserIdIsEmpty))]
-    [Trait("Domain", "Task - Entity")]
-    public void ThrowExceptionWhenUserIdIsEmpty()
-    {
-        var userId = Guid.Empty;
-        var title = fixture.GetTitle();
-        var description = fixture.GetDescription();
-        var category = fixture.GetCategory();
-
-        Action act = () => new DomainEntity.TaskUser(title, description, category, userId);
+        Action act = () => new DomainEntity.TaskUser(title, invalidDescription, category, userId.Id);
 
         act.Should().Throw<EntityValidationException>();
     }

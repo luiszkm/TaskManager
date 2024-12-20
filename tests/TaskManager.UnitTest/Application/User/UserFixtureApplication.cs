@@ -1,5 +1,5 @@
 ﻿using TaskManager.Application.UseCases.User.Create;
-using TaskManager.Application.UseCases.User.Update;
+using TaskManager.Domain.Authorization;
 using TaskManager.Domain.Repositories;
 using TaskManager.UnitTest.Common;
 
@@ -19,8 +19,6 @@ public class UserFixtureApplication : UserFixture
     public Mock<IUserRepository> GetUserRepositoryMock()
       => new();
 
-    public UpdateUserInput UpdateUserInput(Guid id) =>
-        new(id, Password);
 
     public DomainEntity.User UserExample() =>
         new(UserName, Password);
@@ -32,6 +30,15 @@ public class UserFixtureApplication : UserFixture
         var mock = GetUserRepositoryMock();
         mock.Setup(x => x.GetById(user.Id))
             .ReturnsAsync(user);
+        return mock;
+    }
+
+
+    public Mock<IAuthorization> GetAuthorizationMock()
+    {
+        var mock = new Mock<IAuthorization>();
+        mock.Setup(x => x.ComputeSha256Hash(It.IsAny<string>()))
+            .Returns(Password);
         return mock;
     }
 }

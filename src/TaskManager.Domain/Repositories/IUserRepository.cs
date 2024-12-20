@@ -5,10 +5,10 @@ namespace TaskManager.Domain.Repositories;
 
 public interface IUserRepository : IBaseRepository<User>
 {
-    Task<User?> GetByUserName(string userName);
+    Task<User> GetByUserName(string userName);
     Task<List<User>> GetAll();
 
     // chamge password
-    Task<User> ChangePassword(User user);
+
 
 }

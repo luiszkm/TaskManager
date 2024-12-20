@@ -6,12 +6,11 @@ namespace TaskManager.Application.UseCases.TaskUser.ListTasks;
 
 public class ListTasksInput : FilterInput, IRequest<List<TaskModelOutput>>
 {
+    public ListTasksInput() : base() { }
+
     public ListTasksInput(
         string? userName = null,
-        Guid? userId = null,
         CategoryEnuns? category = null,
-        bool completed = false) :
-        base(userName, userId, category, completed)
-    { }
-
+        Guid? userId = null
+    ) : base(userName, category, userId) { }
 }

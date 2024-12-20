@@ -40,8 +40,6 @@ public class TaskFixtureApplication : TaskUserFixture
     }
 
 
-
-
     public (Mock<ITasksRepository>, List<DomainEntity.TaskUser>)
         GetTaskRepositoryMockWithTasks(DomainEntity.TaskUser? task = null, int? range = 10)
     {
@@ -75,7 +73,7 @@ public class TaskFixtureApplication : TaskUserFixture
 
 
         var tasks = Enumerable.Range(1, range ?? 10)
-            .Select(_ => CreateValidTaskUser(user?.Id, category))
+            .Select(_ => CreateValidTaskUser(user.Id, category))
             .ToList();
 
         if (task != null)
@@ -88,10 +86,7 @@ public class TaskFixtureApplication : TaskUserFixture
             .ReturnsAsync((ListTasksInput input) =>
             {
                 var result = tasks.AsQueryable();
-                if (input.UserId != null)
-                {
-                    result = result.Where(x => x.UserId == input.UserId);
-                }
+
                 if (input.Category != null)
                 {
                     result = result.Where(x => x.Category == input.Category);

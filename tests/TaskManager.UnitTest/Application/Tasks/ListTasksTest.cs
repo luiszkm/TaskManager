@@ -20,7 +20,7 @@ public class ListTasksTest
     public async Task ListTasksUseCase()
     {
         var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter();
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user);
 
         var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
         var output = await useCase.Handle(new ListTasksInput(), CancellationToken.None);
@@ -36,8 +36,8 @@ public class ListTasksTest
     public async Task ListTasksUseCaseWithCategoryFilter()
     {
         var category = CategoryEnuns.Personal;
-        var (mock, _) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(category: category);
+        var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user, category: category);
         var input = new ListTasksInput(category: category);
         var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
         var output = await useCase.Handle(input, CancellationToken.None);
@@ -52,8 +52,9 @@ public class ListTasksTest
     public async Task ListTasksUseCaseWithCategoryFilterWork()
     {
         var category = CategoryEnuns.Work;
-        var (mock, _) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(category: category);
+        var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
+        var (mockTaskRepository, tasks) = _fixture.GetTaskRepositoryMocForFilter(user: user,
+            category: category);
         var input = new ListTasksInput(category: category);
         var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
         var output = await useCase.Handle(input, CancellationToken.None);
@@ -68,8 +69,8 @@ public class ListTasksTest
     public async Task ListTasksUseCaseWithCategoryFilterStudy()
     {
         var category = CategoryEnuns.Study;
-        var (mock, _) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(category: category);
+        var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user, category: category);
         var input = new ListTasksInput(category: category);
         var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
         var output = await useCase.Handle(input, CancellationToken.None);
@@ -84,8 +85,10 @@ public class ListTasksTest
     public async Task ListTasksUseCaseWithCategoryFilterOthers()
     {
         var category = CategoryEnuns.Others;
-        var (mock, _) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(category: category);
+        var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(
+            user: user,
+            category: category);
         var input = new ListTasksInput(category: category);
         var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
         var output = await useCase.Handle(input, CancellationToken.None);
@@ -94,20 +97,6 @@ public class ListTasksTest
         output.Should().HaveCount(10);
     }
 
-    // get all tasks with filter by user id
-    [Fact(DisplayName = nameof(ListTasksUseCaseWithUserIdFilter))]
-    [Trait("Application", "Task - Entity")]
-    public async Task ListTasksUseCaseWithUserIdFilter()
-    {
-        var (mock, user) = _fixture.GetUserRepositoryMockWithUser();
-        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user);
-        var input = new ListTasksInput(userId: user.Id);
-        var useCase = new ListTasks(mockTaskRepository.Object, mock.Object);
-        var output = await useCase.Handle(input, CancellationToken.None);
-
-        output.Should().NotBeNull();
-        output.Should().HaveCount(10);
-    }
 
     // get all tasks with filter by user name
     [Fact(DisplayName = nameof(ListTasksUseCaseWithUserNameFilter))]
@@ -150,5 +139,47 @@ public class ListTasksTest
 
         output.Should().NotBeNull();
 
+    }
+
+    // get tasks by user ID
+    [Fact(DisplayName = nameof(ListTasksUseCaseWithUserIdFilter))]
+    [Trait("Application", "Task - Entity")]
+    public async Task ListTasksUseCaseWithUserIdFilter()
+    {
+        var user = _fixture.GetValidUser();
+        var userRepositoryMock = _fixture.GetUserRepositoryMock();
+
+        userRepositoryMock.Setup(x => x.GetById(user.Id))
+            .ReturnsAsync(user);
+
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user);
+
+        var input = new ListTasksInput(userId: user.Id);
+        var useCase = new ListTasks(mockTaskRepository.Object, userRepositoryMock.Object);
+        var output = await useCase.Handle(input, CancellationToken.None);
+
+        output.Should().NotBeNull();
+        output.Should().HaveCount(10);
+    }
+
+    // get tasks by user ID and category
+    [Fact(DisplayName = nameof(ListTasksUseCaseWithUserIdAndCategoryFilter))]
+    [Trait("Application", "Task - Entity")]
+    public async Task ListTasksUseCaseWithUserIdAndCategoryFilter()
+    {
+        var user = _fixture.GetValidUser();
+        var userRepositoryMock = _fixture.GetUserRepositoryMock();
+
+        userRepositoryMock.Setup(x => x.GetById(user.Id))
+            .ReturnsAsync(user);
+
+        var (mockTaskRepository, _) = _fixture.GetTaskRepositoryMocForFilter(user: user, category: CategoryEnuns.Personal);
+
+        var input = new ListTasksInput(userId: user.Id, category: CategoryEnuns.Personal);
+        var useCase = new ListTasks(mockTaskRepository.Object, userRepositoryMock.Object);
+        var output = await useCase.Handle(input, CancellationToken.None);
+
+        output.Should().NotBeNull();
+        output.Should().HaveCount(10);
     }
 }

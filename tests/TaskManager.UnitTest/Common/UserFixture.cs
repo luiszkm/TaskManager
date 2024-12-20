@@ -1,4 +1,6 @@
-﻿namespace TaskManager.UnitTest.Common;
+﻿using TaskManager.Domain.Enums;
+
+namespace TaskManager.UnitTest.Common;
 
 
 
@@ -9,9 +11,13 @@ public class UserFixtureCollection : ICollectionFixture<UserFixture>
 }
 public class UserFixture : BaseFixture
 {
-    public string UserName => Faker.Person.UserName;
-    public string Password => Faker.Internet.Password();
-    public DomainEntity.User CreateValidUser() => new(UserName, Password);
 
+    public DomainEntity.TaskUser CreateValidTaskUser(DomainEntity.User? user = null) =>
+       new(
+            GetTitle(),
+            GetDescription(),
+            CategoryEnuns.Others,
+            user.Id
+           );
 
 }

@@ -6,14 +6,14 @@ namespace TaskManager.Domain.Entities;
 public class User : Entity
 {
     public string UserName { get; private set; }
-    public string Password { get; private set; }
+    public string PasswordHash { get; set; }
     public DateTime LastUpdatePassword { get; private set; }
-    public List<TaskUser> Tasks { get; private set; }
+    public ICollection<TaskUser> Tasks { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    public User(string userName, string password)
+    public User(string userName, string passwordHash)
     {
         UserName = userName;
-        Password = password;
+        PasswordHash = passwordHash;
         Tasks = new List<TaskUser>();
         ValidateUSer();
     }
@@ -29,20 +29,15 @@ public class User : Entity
         ValidateUSer();
         UpdatedAt = DateTime.UtcNow;
     }
-    public void UpdatePassword(string newPassword)
-    {
-        Password = newPassword;
-        LastUpdatePassword = DateTime.UtcNow;
-        ValidateUSer();
-    }
+
     private void ValidateUSer()
     {
         DomainValidation.MinLength(UserName, 3, nameof(UserName));
         DomainValidation.MaxLength(UserName, 50, nameof(UserName));
         DomainValidation.NotNullOrEmpty(UserName, nameof(UserName));
-        DomainValidation.MinLength(Password, 3, nameof(Password));
-        DomainValidation.MaxLength(Password, 50, nameof(Password));
-        DomainValidation.NotNullOrEmpty(Password, nameof(Password));
+        DomainValidation.MinLength(PasswordHash, 3, nameof(PasswordHash));
+        DomainValidation.MaxLength(PasswordHash, 500, nameof(PasswordHash));
+        DomainValidation.NotNullOrEmpty(PasswordHash, nameof(PasswordHash));
     }
 }
 

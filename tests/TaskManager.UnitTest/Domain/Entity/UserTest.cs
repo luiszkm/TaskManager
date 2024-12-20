@@ -23,12 +23,11 @@ public class UserTest
     {
         var userName = _fixture.UserName;
         var password = _fixture.Password;
-        DateTime dateTime = DateTime.Now.AddMinutes(5);
 
         var user = new DomainEntity.User(userName, password);
 
         user.UserName.Should().Be(userName);
-        user.Password.Should().Be(password);
+        user.PasswordHash.Should().Be(password);
         user.Tasks.Should().BeEmpty();
         user.Id.Should().NotBeEmpty();
         user.CreatedAt.Should().BeBefore(DateTime.UtcNow);
@@ -137,7 +136,7 @@ public class UserTest
     public void ThrowExceptionWhenPasswordIsGreaterThan50Characters()
     {
         var userName = _fixture.UserName;
-        var password = new string('a', 51);
+        var password = new string('a', 501);
 
         Action act = () => new DomainEntity.User(userName, password);
 
@@ -179,7 +178,7 @@ public class UserTest
     public void AddTaskToUser()
     {
         var user = _fixture.CreateValidUser();
-        var taskId = _fixture.CreateValidTaskUser();
+        var taskId = _fixture.CreateValidTaskUser(user);
 
         user.AddTask(taskId);
 
@@ -194,7 +193,7 @@ public class UserTest
     public void RemoveTaskFromUser()
     {
         var user = _fixture.CreateValidUser();
-        var taskId = _fixture.CreateValidTaskUser();
+        var taskId = _fixture.CreateValidTaskUser(user);
 
         user.AddTask(taskId);
         user.RemoveTask(taskId);
@@ -204,77 +203,5 @@ public class UserTest
 
     }
 
-    // change password
-    [Fact(DisplayName = nameof(ChangePassword))]
-    [Trait("Domain", "User - Entity")]
-
-    public void ChangePassword()
-    {
-        var user = _fixture.CreateValidUser();
-        var newPassword = _fixture.Password;
-
-        user.UpdatePassword(newPassword);
-
-        user.Password.Should().Be(newPassword);
-        user.LastUpdatePassword.Should().BeAfter(DateTime.UtcNow.AddMinutes(-1));
-    }
-
-
-    // throw exception when password empty
-    [Fact(DisplayName = nameof(ThrowExceptionWhenPasswordEmpty))]
-    [Trait("Domain", "User - Entity")]
-
-    public void ThrowExceptionWhenPasswordEmpty()
-    {
-        var user = _fixture.CreateValidUser();
-
-        Action act = () => user.UpdatePassword(string.Empty);
-
-        act.Should().Throw<EntityValidationException>();
-        user.LastUpdatePassword.Should().BeAfter(DateTime.UtcNow.AddMinutes(-1));
-
-    }
-
-
-
-    // throw exception when password less than 3 characters
-    [Fact(DisplayName = nameof(ThrowExceptionWhenPasswordLessThan3Characters))]
-    [Trait("Domain", "User - Entity")]
-
-    public void ThrowExceptionWhenPasswordLessThan3Characters()
-    {
-        var user = _fixture.CreateValidUser();
-
-        Action act = () => user.UpdatePassword("pa");
-
-        act.Should().Throw<EntityValidationException>();
-    }
-
-
-    // throw exception when password greater than 50 characters
-    [Fact(DisplayName = nameof(ThrowExceptionWhenPasswordGreaterThan50Characters))]
-    [Trait("Domain", "User - Entity")]
-
-    public void ThrowExceptionWhenPasswordGreaterThan50Characters()
-    {
-        var user = _fixture.CreateValidUser();
-
-        Action act = () => user.UpdatePassword(new string('a', 51));
-
-        act.Should().Throw<EntityValidationException>();
-    }
-
-    // throw exception when password whitespace
-    [Fact(DisplayName = nameof(ThrowExceptionWhenPasswordWhitespace))]
-    [Trait("Domain", "User - Entity")]
-
-    public void ThrowExceptionWhenPasswordWhitespace()
-    {
-        var user = _fixture.CreateValidUser();
-
-        Action act = () => user.UpdatePassword(" ");
-
-        act.Should().Throw<EntityValidationException>();
-    }
 
 }

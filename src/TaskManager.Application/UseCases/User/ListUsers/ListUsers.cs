@@ -14,6 +14,8 @@ public class ListUsers : IRequestHandler<ListUsersInput, List<UserModelOutput>>
 
     public async Task<List<UserModelOutput>> Handle(ListUsersInput request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var users = await _userRepository.GetAll();
+        return users.Select(UserModelOutput.FromUser).ToList();
+
     }
 }

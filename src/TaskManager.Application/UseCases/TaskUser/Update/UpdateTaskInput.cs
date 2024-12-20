@@ -22,4 +22,6 @@ public class UpdateTaskInput : IRequest<TaskModelOutput>
     public string? Description { get; set; }
     public CategoryEnuns? Category { get; set; }
 
+
+
 }

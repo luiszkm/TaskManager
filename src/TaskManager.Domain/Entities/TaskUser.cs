@@ -23,6 +23,7 @@ public class TaskUser : Entity
     public DateTime UpdatedAt { get; private set; }
     public CategoryEnuns Category { get; private set; }
     public Guid UserId { get; private set; }
+    public User User { get; private set; }
 
 
     public void UpdateTask(string? title = null
@@ -55,11 +56,12 @@ public class TaskUser : Entity
         DomainValidation.MinLength(Description, 3, nameof(Description));
         DomainValidation.MaxLength(Description, 500, nameof(Description));
         DomainValidation.NotNullOrEmpty(Description, nameof(Description));
-        DomainValidation.ValidateGuid(UserId, nameof(UserId));
 
 
     }
 
-
-
+    public void UpdateTask(string v1, string v2, object work)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -21,7 +21,7 @@ public class CreateTask : IRequestHandler<CreateTaskInput, TaskModelOutput>
         if (user == null)
             throw new NotFoundException("User not found");
 
-        var task = new DomainEntity.TaskUser(input.Title, input.Description, input.Category, input.UserId);
+        var task = new DomainEntity.TaskUser(input.Title, input.Description, input.Category, user.Id);
         user.AddTask(task);
         await _taskRepository.Create(task);
         await _userRepository.Update(user);
