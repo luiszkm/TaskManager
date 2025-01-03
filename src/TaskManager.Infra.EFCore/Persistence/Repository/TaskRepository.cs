@@ -45,14 +45,22 @@ public class TaskRepository : ITasksRepository
     {
         if (filterInput.Category != null)
         {
-            return await _task.Where(x => x.Category == filterInput.Category).ToListAsync();
+            return await _task
+                .AsNoTracking()
+                .Where(x => x.Category == filterInput.Category)
+                .ToListAsync();
         }
 
         if (filterInput.UserId != null)
         {
-            var user = await _user.FirstOrDefaultAsync(x => x.Id == filterInput.UserId);
+            var user = await _task
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.UserId == filterInput.UserId);
             if (user == null) throw new NotFoundDBException("User not found");
-            return await _task.Where(x => x.UserId == user.Id).ToListAsync();
+            return await _task
+                .AsNoTracking()
+                .Where(x => x.UserId == user.Id)
+                .ToListAsync();
         }
 
         if (filterInput.Category != null && filterInput.UserName != null)
@@ -77,7 +85,9 @@ public class TaskRepository : ITasksRepository
 
     public async Task<TaskUser> GetById(Guid id)
     {
-        var task = await _task.FirstOrDefaultAsync(x => x.Id == id);
+        var task = await _task
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
         if (task == null) throw new NotFoundDBException("Task not found");
         return task;
     }

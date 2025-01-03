@@ -11,6 +11,20 @@ public class ListTasksInput : FilterInput, IRequest<List<TaskModelOutput>>
     public ListTasksInput(
         string? userName = null,
         CategoryEnuns? category = null,
-        Guid? userId = null
-    ) : base(userName, category, userId) { }
+        Guid? userId = null,
+        int skip = 0,
+        int take = 25
+
+    ) : base(userName, category, userId)
+    {
+
+        Skip = skip;
+        Take = take;
+
+    }
+
+
+    public int Skip { get; set; }
+    public int Take { get; set; }
+
 }
