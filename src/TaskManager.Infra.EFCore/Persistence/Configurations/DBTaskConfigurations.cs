@@ -16,7 +16,6 @@ public class DBTaskConfigurations : IEntityTypeConfiguration<TaskUser>
         // Configuração da relação
         builder.HasOne(t => t.User)
                .WithMany(u => u.Tasks)
-               .HasForeignKey(t => t.UserId) // Definir a chave estrangeira
-               .OnDelete(DeleteBehavior.Cascade); // comportamento ao deletar
+               .HasForeignKey(t => t.UserId); // Definir a chave estrangeira
     }
 }

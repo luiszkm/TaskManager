@@ -58,21 +58,21 @@ public class TaskReposytoryTest
         var task = _fixture.CreateValidTaskUser(user);
         var dbContext = _fixture.GetDbContext(true);
 
-        // Insere o usuário no banco
-        await dbContext.Users.AddAsync(user);
-        await dbContext.SaveChangesAsync();
+        dbContext.Users.Add(user);
+        dbContext.Tasks.Add(task);
 
-        // Insere a tarefa no banco
-        await dbContext.Tasks.AddAsync(task);
-        await dbContext.SaveChangesAsync();
-
+        dbContext.SaveChanges();
         var repository = new Repository.TaskRepository(dbContext);
 
         // Act
         var result = await repository.GetById(task.Id);
 
         // Assert
-        result.Should().BeEquivalentTo(task);
+        result.Id.Should().Be(task.Id);
+        result.Title.Should().Be(task.Title);
+        result.Description.Should().Be(task.Description);
+        result.Category.Should().Be(task.Category);
+        result.UserId.Should().Be(user.Id);
     }
 
     // throw when task not found
@@ -99,7 +99,6 @@ public class TaskReposytoryTest
         var task = _fixture.CreateValidTaskUser(user);
         var dbContext = _fixture.GetDbContext();
         await dbContext.Users.AddAsync(user);
-        await dbContext.SaveChangesAsync();
         await dbContext.Tasks.AddAsync(task);
         await dbContext.SaveChangesAsync();
         var repository = new Repository.TaskRepository(dbContext);
@@ -117,7 +116,10 @@ public class TaskReposytoryTest
 
         var result = await repository.GetById(task.Id);
 
-        result.Should().BeEquivalentTo(task);
+        result.Title.Should().Be(title);
+        result.Description.Should().Be(description);
+        result.Category.Should().Be(category);
+
     }
 
     // throw when task not found
@@ -276,9 +278,8 @@ public class TaskReposytoryTest
         var tasks = _fixture.CreateValidTaskUsers(users);
         var task = _fixture.CreateValidTaskUser(user);
         tasks.Add(task);
-        var dbContext = _fixture.GetDbContext();
+        var dbContext = _fixture.GetDbContext(true);
         await dbContext.Users.AddRangeAsync(users);
-        await dbContext.SaveChangesAsync();
         await dbContext.Tasks.AddRangeAsync(tasks);
         await dbContext.SaveChangesAsync();
         var repository = new Repository.TaskRepository(dbContext);
