@@ -15,16 +15,14 @@ public class ListTasksInput : FilterInput, IRequest<List<TaskModelOutput>>
         int skip = 0,
         int take = 25
 
-    ) : base(userName, category, userId)
+    ) : base(userName, category, userId, skip, take)
     {
 
-        Skip = skip;
-        Take = take;
+
 
     }
 
 
-    public int Skip { get; set; }
-    public int Take { get; set; }
+
 
 }

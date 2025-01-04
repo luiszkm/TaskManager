@@ -79,7 +79,7 @@ public class TaskRepository : ITasksRepository
             return await _task.Where(x => x.UserId == user.Id).ToListAsync();
         }
 
-        return await _task.ToListAsync();
+        return await _task.Skip(filterInput.Skip).Take(filterInput.Take).ToListAsync();
     }
 
 
