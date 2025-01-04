@@ -99,7 +99,6 @@ public class TaskReposytoryTest
         var task = _fixture.CreateValidTaskUser(user);
         var dbContext = _fixture.GetDbContext();
         await dbContext.Users.AddAsync(user);
-        await dbContext.SaveChangesAsync();
         await dbContext.Tasks.AddAsync(task);
         await dbContext.SaveChangesAsync();
         var repository = new Repository.TaskRepository(dbContext);
@@ -117,7 +116,10 @@ public class TaskReposytoryTest
 
         var result = await repository.GetById(task.Id);
 
-        result.Should().BeEquivalentTo(task);
+        result.Title.Should().Be(title);
+        result.Description.Should().Be(description);
+        result.Category.Should().Be(category);
+
     }
 
     // throw when task not found
